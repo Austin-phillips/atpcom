@@ -50,16 +50,15 @@ router.post('/register', function(req, res, next){
     newUser.save()
         .then((user) => {
             const jwt = utils.issueJWT(user);
-            axios.post("https://hooks.zapier.com/hooks/catch/1739571/oqwdn6u/", user)
-                .then(response => {
-                    console.log(response.data)
-                })
-                .catch(err => {
-                    console.log(err)
-                })
             res.json({success: true, user, token: jwt.token, expiresIn: jwt.expires});
         })
-        .catch(err => next(err));
+        .catch(err => {
+            if(err.code === 11000) {
+                res.status(500).json({message: `User with email ${email} already exists. Please log in.`})
+            } else {
+                res.status(500).json({message: 'Error unkown. Please try again.'})
+            }
+        });
 });
 
 router.post('/forgotpassword', (req, res, next) => {

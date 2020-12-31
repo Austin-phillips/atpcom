@@ -9,7 +9,16 @@ const UserSchema = new mongoose.Schema({
     },
     phone: String,
     hash: String,
-    salt: String
+    salt: String,
+    companyId: {
+        type: Number,
+        default: null
+    },
+    allCompanies: [],
+    admin: {
+        type: Boolean,
+        default: false
+    }
 });
 
 mongoose.model('User', UserSchema);
