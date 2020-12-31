@@ -7,14 +7,22 @@ var env = process.env.NODE_ENV;
 
 const options = { axios };
 
-const ChromeExtension = env === 'development' ? window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f : null;
+const devTools = () => {
+  if(env === 'development') {
+    const enhancers = compose(
+      applyMiddleware(thunk, apiMiddleware(options)),
+      window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f
+    );
+    return enhancers
+  } else {
+    const enhancers = compose(
+      applyMiddleware(thunk, apiMiddleware(options)),
+    );
+    return enhancers
+  }
+}
 
-const enhancers = compose(
-  applyMiddleware(thunk, apiMiddleware(options)),
-  ChromeExtension,
-);
-
-const store = createStore(rootReducer, {}, enhancers);
+const store = createStore(rootReducer, {}, devTools());
 
 if (module.hot) {
   module.hot.accept('./reducers/', () => {
