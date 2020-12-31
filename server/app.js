@@ -29,11 +29,11 @@ app.use(express.urlencoded({extended: true}));
 // Allows our React application to make HTTP requests to Express application
 app.use(cors());
 
-// app.use(express.static(path.join(__dirname, "../build")));
+app.use(express.static(path.join(__dirname, "../build")));
 
 app.use('/api', routes);
-// app.get("*", function (req, res) {
-//   res.sendFile(path.join(__dirname, "../build", "index.html"));
-// });
+app.get("*", function (req, res) {
+  res.sendFile(path.join(__dirname, "../build", "index.html"));
+});
 
 app.listen(PORT, () => console.log(`Listening on port: ${PORT}`));
