@@ -35,7 +35,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "server": "nodemon ./server/app.js",
-    "heroku-postbuild": "npm run build"
+    "heroku-postbuild": "npm run build && node ./server/generateKeypair.js"
   },
   "eslintConfig": {
     "extends": [
