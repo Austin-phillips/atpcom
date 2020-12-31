@@ -21,3 +21,8 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+./server/id_rsa_priv.pem
+./server/id_rsa_pub.pem
+
+.env
