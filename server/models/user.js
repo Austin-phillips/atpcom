@@ -11,7 +11,7 @@ const UserSchema = new mongoose.Schema({
     hash: String,
     salt: String,
     companyId: {
-        type: Number,
+        type: String,
         default: null
     },
     allCompanies: [],

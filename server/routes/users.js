@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const router = require('express').Router();   
 const User = mongoose.model('User');
+const Company = mongoose.model('Company');
 const passport = require('passport');
 const utils = require('../lib/utils');
 require('dotenv').config();
@@ -22,7 +23,11 @@ router.post('/login', function(req, res, next){
 
             if (isValid) {
                 const tokenObject = utils.issueJWT(user);
-                res.status(200).json({ success: true, user, token: tokenObject.token, expiresIn: tokenObject.expires })
+                Company.findById(user.companyId)
+                .then((company) => {
+                    res.status(200).json({ success: true, user, company, token: tokenObject.token, expiresIn: tokenObject.expires })
+                })
+                .catch(err => next(err))
             } else {
                 res.status(401).json({ success: false, msg: 'you entered the incorrect password'})
             }
@@ -96,7 +101,12 @@ router.post('/changepassword', passport.authenticate('jwt', {session: false}), (
 });
 
 router.get('/validate-token', passport.authenticate('jwt', {session: false}), (request, response, next) => {
-    response.json({user: request.user})
+    const id = request.user.companyId;
+    Company.findById(id)
+    .then((company) => {
+        response.json({user: request.user, company: company})
+    })
+    .catch(err => console.log(err))
 })
 
 module.exports = router;
