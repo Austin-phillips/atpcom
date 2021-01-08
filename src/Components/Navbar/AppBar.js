@@ -7,6 +7,7 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import { connect } from 'react-redux';
+import DrawerContainer from './drawer';
 import { Link, withRouter, Redirect } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
@@ -49,9 +50,7 @@ function Nav(props) {
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
-          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-            <MenuIcon />
-          </IconButton>
+          <DrawerContainer user={props.user}/>
           <Typography align='left' variant="h6" className={classes.title}>
             {props.company.name}
           </Typography>
